@@ -226,6 +226,159 @@ describe('Todo API Endpoints', () => {
     });
   });
 
+  // T019-T021: Overdue Status Integration Tests
+  describe('GET /api/todos - overdue status', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-03-23T12:00:00Z'));
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should return isOverdue=true for todos with past due date', async () => {
+      // Create a todo with past due date
+      await request(app).post('/api/todos').send({
+        title: 'Overdue Task',
+        dueDate: '2026-03-20'
+      });
+
+      const response = await request(app).get('/api/todos');
+      expect(response.status).toBe(200);
+
+      const overdueTodo = response.body.find(t => t.title === 'Overdue Task');
+      expect(overdueTodo).toBeDefined();
+      expect(overdueTodo.isOverdue).toBe(true);
+      expect(overdueTodo.daysOverdue).toBe(3);
+    });
+
+    it('should return isOverdue=false for todos with future due date', async () => {
+      await request(app).post('/api/todos').send({
+        title: 'Future Task',
+        dueDate: '2026-03-25'
+      });
+
+      const response = await request(app).get('/api/todos');
+      expect(response.status).toBe(200);
+
+      const futureTodo = response.body.find(t => t.title === 'Future Task');
+      expect(futureTodo).toBeDefined();
+      expect(futureTodo.isOverdue).toBe(false);
+      expect(futureTodo.daysOverdue).toBeUndefined();
+    });
+
+    it('should return isOverdue=false for completed todos with past due date', async () => {
+      const createResponse = await request(app).post('/api/todos').send({
+        title: 'Completed Late Task',
+        dueDate: '2026-03-20'
+      });
+      const todoId = createResponse.body.id;
+
+      // Toggle to complete
+      await request(app).patch(`/api/todos/${todoId}/toggle`);
+
+      const response = await request(app).get('/api/todos');
+      expect(response.status).toBe(200);
+
+      const completedTodo = response.body.find(t => t.id === todoId);
+      expect(completedTodo).toBeDefined();
+      expect(completedTodo.isOverdue).toBe(false);
+      expect(completedTodo.daysOverdue).toBeUndefined();
+    });
+
+    it('should include isOverdue field in all todos', async () => {
+      const response = await request(app).get('/api/todos');
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+
+      response.body.forEach(todo => {
+        expect(todo).toHaveProperty('isOverdue');
+        expect(typeof todo.isOverdue).toBe('boolean');
+      });
+    });
+  });
+
+  describe('GET /api/todos/:id - overdue status', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-03-23T12:00:00Z'));
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should return isOverdue fields for single overdue todo', async () => {
+      const createResponse = await request(app).post('/api/todos').send({
+        title: 'Single Overdue Task',
+        dueDate: '2026-03-15'
+      });
+      const todoId = createResponse.body.id;
+
+      const response = await request(app).get(`/api/todos/${todoId}`);
+      expect(response.status).toBe(200);
+      expect(response.body.isOverdue).toBe(true);
+      expect(response.body.daysOverdue).toBe(8);
+    });
+
+    it('should return isOverdue=false for non-overdue todo', async () => {
+      const createResponse = await request(app).post('/api/todos').send({
+        title: 'Future Task',
+        dueDate: '2026-12-31'
+      });
+      const todoId = createResponse.body.id;
+
+      const response = await request(app).get(`/api/todos/${todoId}`);
+      expect(response.status).toBe(200);
+      expect(response.body.isOverdue).toBe(false);
+      expect(response.body.daysOverdue).toBeUndefined();
+    });
+  });
+
+  describe('POST /api/todos - overdue status in response', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-03-23T12:00:00Z'));
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should return isOverdue=false for newly created todo with future date', async () => {
+      const response = await request(app).post('/api/todos').send({
+        title: 'New Future Task',
+        dueDate: '2026-12-31'
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.isOverdue).toBe(false);
+      expect(response.body.daysOverdue).toBeUndefined();
+    });
+
+    it('should return isOverdue=true for todo created with past due date', async () => {
+      const response = await request(app).post('/api/todos').send({
+        title: 'Already Overdue Task',
+        dueDate: '2026-03-10'
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.isOverdue).toBe(true);
+      expect(response.body.daysOverdue).toBe(13);
+    });
+
+    it('should include isOverdue field even when no due date', async () => {
+      const response = await request(app).post('/api/todos').send({
+        title: 'No Deadline Task'
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.isOverdue).toBe(false);
+      expect(response.body.daysOverdue).toBeUndefined();
+    });
+  });
+
   // Backward compatibility tests for old /api/items endpoints
   describe('GET /api/items (backward compatibility)', () => {
     it('should return array of items', async () => {

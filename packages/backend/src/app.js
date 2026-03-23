@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const Database = require('better-sqlite3');
+const { enrichTodoWithOverdueStatus } = require('./services/todoService');
 
 // Initialize express app
 const app = express();
@@ -44,7 +45,8 @@ console.log('In-memory database initialized with sample todos');
 app.get('/api/todos', (req, res) => {
   try {
     const todos = db.prepare('SELECT * FROM todos ORDER BY createdAt DESC').all();
-    res.json(todos);
+    const enrichedTodos = todos.map(enrichTodoWithOverdueStatus);
+    res.json(enrichedTodos);
   } catch (error) {
     console.error('Error fetching todos:', error);
     res.status(500).json({ error: 'Failed to fetch todos' });
@@ -64,7 +66,7 @@ app.get('/api/todos/:id', (req, res) => {
       return res.status(404).json({ error: 'Todo not found' });
     }
 
-    res.json(todo);
+    res.json(enrichTodoWithOverdueStatus(todo));
   } catch (error) {
     console.error('Error fetching todo:', error);
     res.status(500).json({ error: 'Failed to fetch todo' });
@@ -88,7 +90,7 @@ app.post('/api/todos', (req, res) => {
     const id = result.lastInsertRowid;
 
     const newTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
-    res.status(201).json(newTodo);
+    res.status(201).json(enrichTodoWithOverdueStatus(newTodo));
   } catch (error) {
     console.error('Error creating todo:', error);
     res.status(500).json({ error: 'Failed to create todo' });

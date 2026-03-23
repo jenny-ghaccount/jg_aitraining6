@@ -162,4 +162,54 @@ class TodoService {
   }
 }
 
+/**
+ * Get today's date in ISO format (YYYY-MM-DD)
+ * @returns {string} Today's date as ISO string
+ */
+function getTodayDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+/**
+ * Check if a todo is overdue
+ * @param {Object} todo - Todo object with dueDate and completed fields
+ * @returns {boolean} True if todo is overdue, false otherwise
+ */
+function isOverdue(todo) {
+  if (!todo.dueDate || todo.completed) {
+    return false;
+  }
+  return todo.dueDate < getTodayDate();
+}
+
+/**
+ * Calculate how many days a todo is overdue
+ * @param {string} dueDate - Due date in ISO format (YYYY-MM-DD)
+ * @returns {number} Number of days overdue (positive integer)
+ */
+function calculateDaysOverdue(dueDate) {
+  const today = new Date();
+  const due = new Date(dueDate);
+  const diffMs = today - due;
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Enrich a todo object with computed overdue status fields
+ * @param {Object} todo - Todo object from database
+ * @returns {Object} Todo object with isOverdue and optionally daysOverdue fields
+ */
+function enrichTodoWithOverdueStatus(todo) {
+  const overdue = isOverdue(todo);
+  return {
+    ...todo,
+    isOverdue: overdue,
+    ...(overdue && { daysOverdue: calculateDaysOverdue(todo.dueDate) })
+  };
+}
+
 module.exports = TodoService;
+module.exports.getTodayDate = getTodayDate;
+module.exports.isOverdue = isOverdue;
+module.exports.calculateDaysOverdue = calculateDaysOverdue;
+module.exports.enrichTodoWithOverdueStatus = enrichTodoWithOverdueStatus;

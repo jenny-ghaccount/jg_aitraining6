@@ -34,16 +34,16 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create backend service structure in packages/backend/src/services/todoService.js with getTodayDate() helper function
-- [ ] T006 Implement isOverdue() function in packages/backend/src/services/todoService.js (date-only comparison logic)
-- [ ] T007 Implement calculateDaysOverdue() function in packages/backend/src/services/todoService.js (date difference calculation)
-- [ ] T008 Implement enrichTodoWithOverdueStatus() function in packages/backend/src/services/todoService.js (add computed fields)
-- [ ] T009 Create test file packages/backend/__tests__/services/todoService.test.js with Jest fake timers setup
-- [ ] T010 [P] Add unit tests for getTodayDate() in packages/backend/__tests__/services/todoService.test.js
-- [ ] T011 [P] Add unit tests for isOverdue() covering all edge cases in packages/backend/__tests__/services/todoService.test.js
-- [ ] T012 [P] Add unit tests for calculateDaysOverdue() in packages/backend/__tests__/services/todoService.test.js
-- [ ] T013 [P] Add unit tests for enrichTodoWithOverdueStatus() in packages/backend/__tests__/services/todoService.test.js
-- [ ] T014 Run backend tests to verify all service functions pass (npm run test:backend)
+- [X] T005 Create backend service structure in packages/backend/src/services/todoService.js with getTodayDate() helper function
+- [X] T006 Implement isOverdue() function in packages/backend/src/services/todoService.js (date-only comparison logic)
+- [X] T007 Implement calculateDaysOverdue() function in packages/backend/src/services/todoService.js (date difference calculation)
+- [X] T008 Implement enrichTodoWithOverdueStatus() function in packages/backend/src/services/todoService.js (add computed fields)
+- [X] T009 Create test file packages/backend/__tests__/services/todoService.test.js with Jest fake timers setup
+- [X] T010 [P] Add unit tests for getTodayDate() in packages/backend/__tests__/services/todoService.test.js
+- [X] T011 [P] Add unit tests for isOverdue() covering all edge cases in packages/backend/__tests__/services/todoService.test.js
+- [X] T012 [P] Add unit tests for calculateDaysOverdue() in packages/backend/__tests__/services/todoService.test.js
+- [X] T013 [P] Add unit tests for enrichTodoWithOverdueStatus() in packages/backend/__tests__/services/todoService.test.js
+- [X] T014 Run backend tests to verify all service functions pass (npm run test:backend)
 
 **Checkpoint**: Foundation ready - backend can compute overdue status correctly
 
@@ -57,28 +57,28 @@
 
 ### Backend API Integration for User Story 1
 
-- [ ] T015 [US1] Update GET /api/todos route in packages/backend/src/app.js to import enrichTodoWithOverdueStatus from todoService
-- [ ] T016 [US1] Modify GET /api/todos route to map all todos through enrichTodoWithOverdueStatus before returning response in packages/backend/src/app.js
-- [ ] T017 [US1] Update GET /api/todos/:id route to apply enrichTodoWithOverdueStatus to single todo in packages/backend/src/app.js
-- [ ] T018 [US1] Update POST /api/todos route to apply enrichTodoWithOverdueStatus to newly created todo in response in packages/backend/src/app.js
-- [ ] T019 [US1] Add integration tests for GET /api/todos with overdue todos in packages/backend/__tests__/app.test.js
-- [ ] T020 [P] [US1] Add integration tests for GET /api/todos/:id with overdue todo in packages/backend/__tests__/app.test.js
-- [ ] T021 [P] [US1] Add integration tests for POST /api/todos response includes isOverdue field in packages/backend/__tests__/app.test.js
-- [ ] T022 [US1] Run backend tests to verify API returns computed overdue fields (npm run test:backend)
+- [X] T015 [US1] Update GET /api/todos route in packages/backend/src/app.js to import enrichTodoWithOverdueStatus from todoService
+- [X] T016 [US1] Modify GET /api/todos route to map all todos through enrichTodoWithOverdueStatus before returning response in packages/backend/src/app.js
+- [X] T017 [US1] Update GET /api/todos/:id route to apply enrichTodoWithOverdueStatus to single todo in packages/backend/src/app.js
+- [X] T018 [US1] Update POST /api/todos route to apply enrichTodoWithOverdueStatus to newly created todo in response in packages/backend/src/app.js
+- [X] T019 [US1] Add integration tests for GET /api/todos with overdue todos in packages/backend/__tests__/app.test.js
+- [X] T020 [P] [US1] Add integration tests for GET /api/todos/:id with overdue todo in packages/backend/__tests__/app.test.js
+- [X] T021 [P] [US1] Add integration tests for POST /api/todos response includes isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T022 [US1] Run backend tests to verify API returns computed overdue fields (npm run test:backend)
 
 ### Frontend Visual Indicators for User Story 1
 
-- [ ] T023 [P] [US1] Add CSS variables for overdue colors in packages/frontend/src/styles/theme.css (--danger-color for light and dark themes)
-- [ ] T024 [P] [US1] Add .overdue-text class styling with red color in packages/frontend/src/styles/theme.css
-- [ ] T025 [P] [US1] Add .overdue-icon class styling with font size and margin in packages/frontend/src/styles/theme.css
-- [ ] T026 [US1] Update TodoCard component to conditionally apply overdue class based on todo.isOverdue in packages/frontend/src/components/TodoCard.js
-- [ ] T027 [US1] Add warning icon (⚠️) conditional rendering before title when todo.isOverdue is true in packages/frontend/src/components/TodoCard.js
-- [ ] T028 [US1] Apply overdue-text class to todo title when todo.isOverdue is true in packages/frontend/src/components/TodoCard.js
-- [ ] T029 [US1] Add ARIA label for accessibility when todo is overdue in packages/frontend/src/components/TodoCard.js
-- [ ] T030 [US1] Add test for overdue todo rendering with icon and red text in packages/frontend/src/components/__tests__/TodoCard.test.js
-- [ ] T031 [P] [US1] Add test for non-overdue todo does not show indicators in packages/frontend/src/components/__tests__/TodoCard.test.js
-- [ ] T032 [P] [US1] Add test for completed overdue todo does not show indicators in packages/frontend/src/components/__tests__/TodoCard.test.js
-- [ ] T033 [US1] Run frontend tests to verify TodoCard visual indicators (npm run test:frontend)
+- [X] T023 [P] [US1] Add CSS variables for overdue colors in packages/frontend/src/styles/theme.css (--danger-color for light and dark themes)
+- [X] T024 [P] [US1] Add .overdue-text class styling with red color in packages/frontend/src/styles/theme.css
+- [X] T025 [P] [US1] Add .overdue-icon class styling with font size and margin in packages/frontend/src/styles/theme.css
+- [X] T026 [US1] Update TodoCard component to conditionally apply overdue class based on todo.isOverdue in packages/frontend/src/components/TodoCard.js
+- [X] T027 [US1] Add warning icon (⚠️) conditional rendering before title when todo.isOverdue is true in packages/frontend/src/components/TodoCard.js
+- [X] T028 [US1] Apply overdue-text class to todo title when todo.isOverdue is true in packages/frontend/src/components/TodoCard.js
+- [X] T029 [US1] Add ARIA label for accessibility when todo is overdue in packages/frontend/src/components/TodoCard.js
+- [X] T030 [US1] Add test for overdue todo rendering with icon and red text in packages/frontend/src/components/__tests__/TodoCard.test.js
+- [X] T031 [P] [US1] Add test for non-overdue todo does not show indicators in packages/frontend/src/components/__tests__/TodoCard.test.js
+- [X] T032 [P] [US1] Add test for completed overdue todo does not show indicators in packages/frontend/src/components/__tests__/TodoCard.test.js
+- [X] T033 [US1] Run frontend tests to verify TodoCard visual indicators (npm run test:frontend)
 
 **Checkpoint**: User Story 1 complete - Users can visually identify overdue tasks with red text and warning icon
 
@@ -92,12 +92,12 @@
 
 ### Frontend Duration Display for User Story 2
 
-- [ ] T034 [P] [US2] Add .overdue-info class styling in packages/frontend/src/styles/theme.css (font size, color, margin)
-- [ ] T035 [US2] Add conditional rendering of overdue duration message in packages/frontend/src/components/TodoCard.js (displays "X day(s) overdue")
-- [ ] T036 [US2] Implement proper singular/plural handling for days count in overdue message in packages/frontend/src/components/TodoCard.js
-- [ ] T037 [US2] Add test for 1 day overdue displays "1 day overdue" in packages/frontend/src/components/__tests__/TodoCard.test.js
-- [ ] T038 [P] [US2] Add test for multiple days overdue displays "X days overdue" in packages/frontend/src/components/__tests__/TodoCard.test.js
-- [ ] T039 [US2] Run frontend tests to verify overdue duration display (npm run test:frontend)
+- [X] T034 [P] [US2] Add .overdue-info class styling in packages/frontend/src/styles/theme.css (font size, color, margin)
+- [X] T035 [US2] Add conditional rendering of overdue duration message in packages/frontend/src/components/TodoCard.js (displays "X day(s) overdue")
+- [X] T036 [US2] Implement proper singular/plural handling for days count in overdue message in packages/frontend/src/components/TodoCard.js
+- [X] T037 [US2] Add test for 1 day overdue displays "1 day overdue" in packages/frontend/src/components/__tests__/TodoCard.test.js
+- [X] T038 [P] [US2] Add test for multiple days overdue displays "X days overdue" in packages/frontend/src/components/__tests__/TodoCard.test.js
+- [X] T039 [US2] Run frontend tests to verify overdue duration display (npm run test:frontend)
 
 **Checkpoint**: User Story 2 complete - Users can see how many days tasks are overdue
 
@@ -111,16 +111,16 @@
 
 ### Frontend Filter/Sort Implementation for User Story 3
 
-- [ ] T040 [P] [US3] Add filter dropdown UI component in packages/frontend/src/components/TodoList.js (options: All, Overdue Only)
-- [ ] T041 [P] [US3] Add sort dropdown UI component in packages/frontend/src/components/TodoList.js (options: Default, Most Overdue First)
-- [ ] T042 [US3] Implement filter logic to show only overdue todos when "Overdue Only" selected in packages/frontend/src/components/TodoList.js
-- [ ] T043 [US3] Implement sort logic to order todos by daysOverdue descending when "Most Overdue First" selected in packages/frontend/src/components/TodoList.js
-- [ ] T044 [US3] Add filter state management with useState in packages/frontend/src/components/TodoList.js
-- [ ] T045 [US3] Add sort state management with useState in packages/frontend/src/components/TodoList.js
-- [ ] T046 [US3] Add test for filter shows only overdue todos in packages/frontend/src/components/__tests__/TodoList.test.js
-- [ ] T047 [P] [US3] Add test for sort orders by most overdue first in packages/frontend/src/components/__tests__/TodoList.test.js
-- [ ] T048 [P] [US3] Add test for filter and sort work together correctly in packages/frontend/src/components/__tests__/TodoList.test.js
-- [ ] T049 [US3] Run frontend tests to verify filter and sort functionality (npm run test:frontend)
+- [X] T040 [P] [US3] Add filter dropdown UI component in packages/frontend/src/components/TodoList.js (options: All, Overdue Only)
+- [X] T041 [P] [US3] Add sort dropdown UI component in packages/frontend/src/components/TodoList.js (options: Default, Most Overdue First)
+- [X] T042 [US3] Implement filter logic to show only overdue todos when "Overdue Only" selected in packages/frontend/src/components/TodoList.js
+- [X] T043 [US3] Implement sort logic to order todos by daysOverdue descending when "Most Overdue First" selected in packages/frontend/src/components/TodoList.js
+- [X] T044 [US3] Add filter state management with useState in packages/frontend/src/components/TodoList.js
+- [X] T045 [US3] Add sort state management with useState in packages/frontend/src/components/TodoList.js
+- [X] T046 [US3] Add test for filter shows only overdue todos in packages/frontend/src/components/__tests__/TodoList.test.js
+- [X] T047 [P] [US3] Add test for sort orders by most overdue first in packages/frontend/src/components/__tests__/TodoList.test.js
+- [X] T048 [P] [US3] Add test for filter and sort work together correctly in packages/frontend/src/components/__tests__/TodoList.test.js
+- [X] T049 [US3] Run frontend tests to verify filter and sort functionality (npm run test:frontend)
 
 **Checkpoint**: User Story 3 complete - Users can filter and sort by overdue status
 
@@ -130,22 +130,22 @@
 
 **Purpose**: Final validation and quality improvements
 
-- [ ] T050 [P] Run all backend tests to ensure no regressions (npm run test:backend)
-- [ ] T051 [P] Run all frontend tests to ensure no regressions (npm run test:frontend)
-- [ ] T052 [P] Verify code coverage meets 80%+ requirement for backend
-- [ ] T053 [P] Verify code coverage meets 80%+ requirement for frontend
-- [ ] T054 [P] Run ESLint checks on backend code (npm run lint:backend)
-- [ ] T055 [P] Run ESLint checks on frontend code (npm run lint:frontend)
-- [ ] T056 Manual testing: Create todo with past due date, verify red text and warning icon appear
-- [ ] T057 Manual testing: Mark overdue todo as complete, verify indicators disappear
-- [ ] T058 Manual testing: Create todo with future due date, verify no indicators appear
-- [ ] T059 Manual testing: Verify overdue todo shows correct days overdue (compare with calendar)
-- [ ] T060 Manual testing: Test filter "Overdue Only" shows correct subset
-- [ ] T061 Manual testing: Test sort "Most Overdue First" orders correctly
-- [ ] T062 Manual testing: Verify light and dark theme colors for overdue text are visible
-- [ ] T063 Validate quickstart.md test scenarios all pass
-- [ ] T064 Review code for DRY, KISS, SOLID principles compliance
-- [ ] T065 Review code for design system consistency (8px grid, theme colors)
+- [X] T050 [P] Run all backend tests to ensure no regressions (npm run test:backend)
+- [X] T051 [P] Run all frontend tests to ensure no regressions (npm run test:frontend)
+- [X] T052 [P] Verify code coverage meets 80%+ requirement for backend
+- [X] T053 [P] Verify code coverage meets 80%+ requirement for frontend
+- [X] T054 [P] Run ESLint checks on backend code (npm run lint:backend)
+- [X] T055 [P] Run ESLint checks on frontend code (npm run lint:frontend)
+- [X] T056 Manual testing: Create todo with past due date, verify red text and warning icon appear
+- [X] T057 Manual testing: Mark overdue todo as complete, verify indicators disappear
+- [X] T058 Manual testing: Create todo with future due date, verify no indicators appear
+- [X] T059 Manual testing: Verify overdue todo shows correct days overdue (compare with calendar)
+- [X] T060 Manual testing: Test filter "Overdue Only" shows correct subset
+- [X] T061 Manual testing: Test sort "Most Overdue First" orders correctly
+- [X] T062 Manual testing: Verify light and dark theme colors for overdue text are visible
+- [X] T063 Validate quickstart.md test scenarios all pass
+- [X] T064 Review code for DRY, KISS, SOLID principles compliance
+- [X] T065 Review code for design system consistency (8px grid, theme colors)
 
 ---
 
