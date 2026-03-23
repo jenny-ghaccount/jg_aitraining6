@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Support for Overdue Todo Items - As a todo application user, I want to easily identify and distinguish overdue tasks in my todo list so that I can prioritize my work and quickly see which tasks are past their due date"
 
+## Clarifications
+
+### Session 2026-03-23
+
+- Q: Visual indicator design for overdue tasks? → A: Red text color + warning icon (multi-modal approach for accessibility)
+- Q: Time zone handling for due date comparison? → A: Use date-only comparison (ignore time zones)
+- Q: Completed-after-due-date handling? → A: Show completion was late (display "Completed X days late" on completed tasks)
+- Q: Real-time updates vs page refresh? → A: Automatic on navigation (updates when user navigates away and returns to list)
+- Q: Calculation location (frontend vs backend)? → A: Backend calculates per request (API returns calculated overdue status on each fetch)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Visual Identification of Overdue Tasks (Priority: P1)
@@ -58,31 +68,30 @@ Users managing many tasks want to focus specifically on overdue items or exclude
 
 ### Edge Cases
 
-- What happens when a task's due date is in a different time zone than the user's current location?
-- How does the system handle tasks that were completed after their due date?
-- What happens when a task becomes overdue while the user is actively viewing the list? (Does it update in real-time or require a refresh?)
-- How does the system handle tasks with due dates but no specific time (date-only due dates)?
-- What happens at midnight when tasks transition from "due today" to "overdue"?
-- How are tasks handled when the system clock is incorrect?
+- **Date-only due dates**: System treats all due dates as date-only (no time component) per FR-003, eliminating time-based ambiguity
+- **Midnight transitions**: Overdue status is calculated on each API request based on current server date; tasks become overdue at the start of the day after their due date
+- **Incorrect system clock**: System relies on server clock; if server time is incorrect, overdue calculations will be incorrect until clock is corrected (monitoring/alerting on clock skew recommended but outside feature scope)
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: System MUST identify a todo as overdue when its due date is before the current date AND the todo status is not "completed"
-- **FR-002**: System MUST apply distinct visual styling to overdue todos to differentiate them from non-overdue todos
-- **FR-003**: System MUST calculate overdue status based on calendar days (a task due yesterday is overdue, regardless of exact time)
+- **FR-002**: System MUST apply distinct visual styling to overdue todos using red text color and a warning icon to differentiate them from non-overdue todos (multi-modal accessibility approach)
+- **FR-003**: System MUST calculate overdue status based on calendar dates using date-only comparison (ignoring time and time zone information)
 - **FR-004**: System MUST NOT mark todos as overdue if they have no due date assigned
-- **FR-005**: System MUST NOT mark todos as overdue if they are already completed, regardless of when they were completed
-- **FR-006**: System MUST update overdue status when the date changes (tasks that become overdue should reflect this when users view their list)
+- **FR-005**: System MUST NOT mark todos as overdue if they are already completed, but MUST display late completion information (e.g., "Completed 3 days late") if the task was completed after its due date
+- **FR-006**: System MUST recalculate overdue status when the todo list is loaded or refreshed (automatic update on navigation, no manual refresh required)
 - **FR-007**: System MUST display the number of days a task is overdue for P2 implementation
 - **FR-008**: System MUST support filtering todo lists to show only overdue items for P3 implementation
 - **FR-009**: System MUST support sorting todos by overdue status for P3 implementation
-- **FR-010**: System MUST use the user's local date/time for determining what constitutes "today" and "past"
+- **FR-010**: System MUST use the user's local calendar date for determining what constitutes "today" and "past" (date-only, no time zone conversion)
+- **FR-011**: System MUST calculate and display how many days late a task was completed (completion date minus due date) when applicable
+- **FR-012**: Backend API MUST calculate overdue status and overdue duration on each request and include this computed information in the response (overdue status is computed, not stored)
 
 ### Key Entities
 
-- **Todo Item**: Represents a task with properties including title, status (completed/incomplete), due date (optional), and display state. The overdue state is derived from comparing the due date with the current date and checking the completion status.
+- **Todo Item**: Represents a task with properties including title, status (completed/incomplete), due date (optional), and display state. The overdue state is computed by the backend on each API request by comparing the due date with the current date and checking the completion status. The API response includes computed fields: `isOverdue` (boolean) and `daysOverdue` (integer, for incomplete overdue tasks) or `daysLate` (integer, for tasks completed after due date).
 
 ## Success Criteria *(mandatory)*
 
